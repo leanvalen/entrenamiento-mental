@@ -7,24 +7,27 @@
 
 const NOMBRE_CACHE = 'em-cache-v1';
 
+// Rutas relativas a la ubicación del service worker (no absolutas desde
+// la raíz del dominio), para que funcione tanto servida desde la raíz
+// como desde una subcarpeta (ej. GitHub Pages: usuario.github.io/repo/).
 const ASSETS_PROPIOS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/css/reset.css',
-  '/css/tokens.css',
-  '/css/app.css',
-  '/js/app.js',
-  '/js/router.js',
-  '/js/storage.js',
-  '/js/timer.js',
-  '/js/screens/morning.js',
-  '/js/screens/midday.js',
-  '/js/screens/threshold.js',
-  '/js/screens/night.js',
-  '/js/screens/history.js',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
+  './',
+  './index.html',
+  './manifest.json',
+  './css/reset.css',
+  './css/tokens.css',
+  './css/app.css',
+  './js/app.js',
+  './js/router.js',
+  './js/storage.js',
+  './js/timer.js',
+  './js/screens/morning.js',
+  './js/screens/midday.js',
+  './js/screens/threshold.js',
+  './js/screens/night.js',
+  './js/screens/history.js',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
 ];
 
 self.addEventListener('install', (evento) => {
@@ -70,7 +73,7 @@ async function cacheFirst(request) {
     // Sin red y sin caché: si era una navegación, mostrar el index
     // cacheado para que la app siga funcionando offline.
     if (request.mode === 'navigate') {
-      return caches.match('/index.html');
+      return caches.match('./index.html');
     }
     throw error;
   }
