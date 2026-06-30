@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#E8A04C" />
+  <title>Entrenamiento Mental</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,500&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+
+  <!-- Contenedor principal: ancho máximo 430px, centrado -->
+  <div class="app">
+
+    <!-- Área de contenido scrolleable. El router muestra/oculta las secciones
+         agregando/quitando la clase screen--active. -->
+    <main class="contenido">
+
+      <section class="pantalla" data-screen="morning" aria-label="Mañana">
+        <h1 class="pantalla__titulo">Mañana</h1>
+
+        <label class="checklist__item">
+          <input type="checkbox" id="checkPosturaManana" class="checklist__checkbox" aria-label="Marcar postura de calibración matutina" />
+          <span>Antes de tocar el teléfono: hombros atrás, respiración profunda. Adoptá la postura de la persona segura y constante que querés ser.</span>
+        </label>
+
+        <p class="cita cita--morning">"Si hoy fuera a ser un día donde mi proactividad es absoluta, ¿cómo me sentiría ahora mismo y cuál sería mi primera pequeña victoria?"</p>
+
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoVictoriaManana">Mi primera pequeña victoria de hoy es...</label>
+          <input type="text" id="campoVictoriaManana" class="campo__input" placeholder="Escribí tu victoria" />
+        </div>
+
+        <div class="afirmaciones" role="list" aria-label="Afirmaciones de mañana">
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--morning" role="listitem">
+            <p>Hoy observo el mundo tal y como es. Acepto los retos que puedan surgir, sabiendo que tengo la flexibilidad y los recursos internos para adaptarme y manejarlos con calma.</p>
+          </div>
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--morning" role="listitem">
+            <p>Confío en mis habilidades y en mi capacidad de aprender. Cada decisión que tome hoy, grande o pequeña, es un paso más para fortalecer mi confianza.</p>
+          </div>
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--morning" role="listitem">
+            <p>Elijo dirigir mi atención hacia lo que puedo controlar. Si mi mente divaga hacia la preocupación, respiro profundo y la traigo suavemente de vuelta a mi presente y a mi propósito.</p>
+          </div>
+        </div>
+
+        <button class="boton boton--secundario boton--ancho" id="botonAbrirTimerManana" aria-label="Abrir respiración 4 2 6">Respiración 4-2-6</button>
+
+        <button class="boton boton--primario" id="botonCompletarManana" aria-label="Completar bloque de mañana">Completar mañana ✓</button>
+      </section>
+
+      <section class="pantalla" data-screen="midday" aria-label="Mediodía">
+        <h1 class="pantalla__titulo">Mediodía</h1>
+
+        <p class="texto-intro">Tomate 2 minutos para auditar qué te has estado diciendo. La baja autoestima y la inconstancia se alimentan de tu diálogo interno.</p>
+
+        <div class="tarjeta">
+          <h3 class="tarjeta__titulo">Virus cognitivos a detectar</h3>
+          <p>Generalizaciones (ej. "nada me sale bien", "siempre dejo las cosas") y reglas rígidas ("tengo que", "no puedo"). Cuando atrapes una, destruila con una pregunta de precisión.</p>
+        </div>
+
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoDistorsionMediodia">¿Qué me dije que suena a generalización o regla rígida?</label>
+          <textarea id="campoDistorsionMediodia" class="campo__input" rows="3" placeholder="Escribí lo que te dijiste"></textarea>
+        </div>
+
+        <p class="cita cita--midday">"¿Absolutamente nada me sale bien? ¿Hubo al menos una cosa pequeña que sí logré hoy?"</p>
+
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoWinMediodia">La cosa pequeña que sí logré es...</label>
+          <input type="text" id="campoWinMediodia" class="campo__input" placeholder="Escribí tu pequeño logro" />
+        </div>
+
+        <button class="boton boton--primario" id="botonCompletarMediodia" aria-label="Completar bloque de mediodía">Completar mediodía ✓</button>
+      </section>
+
+      <section class="pantalla" data-screen="threshold" aria-label="Umbral">
+        <h1 class="pantalla__titulo">Umbral</h1>
+
+        <div class="toggle-pregunta">
+          <p class="campo__etiqueta">¿Entrás o salís de trabajar?</p>
+          <div class="toggle" role="group" aria-label="Entro o salgo de trabajar">
+            <button class="toggle__opcion" id="botonUmbralEntro" data-valor="enter" aria-pressed="true">Entro a trabajar</button>
+            <button class="toggle__opcion" id="botonUmbralSalgo" data-valor="exit" aria-pressed="false">Salgo de trabajar</button>
+          </div>
+        </div>
+
+        <ol class="checklist-secuencial" id="listaPasosUmbral" aria-label="Pasos del anclaje de umbral"></ol>
+
+        <button class="boton boton--primario" id="botonCompletarUmbral" aria-label="Completar bloque de umbral">Completar umbral ✓</button>
+      </section>
+
+      <section class="pantalla" data-screen="night" aria-label="Noche">
+        <h1 class="pantalla__titulo">Noche</h1>
+
+        <p class="cita cita--night">"¿Cuáles fueron tres cosas, por más minúsculas que sean, en las que fui constante o proactivo hoy?"</p>
+
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoCosecha1">Cosecha 1</label>
+          <input type="text" id="campoCosecha1" class="campo__input" placeholder="Algo en lo que fui constante o proactivo" />
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoCosecha2">Cosecha 2</label>
+          <input type="text" id="campoCosecha2" class="campo__input" placeholder="Algo en lo que fui constante o proactivo" />
+        </div>
+        <div class="campo">
+          <label class="campo__etiqueta" for="campoCosecha3">Cosecha 3</label>
+          <input type="text" id="campoCosecha3" class="campo__input" placeholder="Algo en lo que fui constante o proactivo" />
+        </div>
+
+        <div class="toggle-pregunta">
+          <p class="campo__etiqueta">¿Hubo algún fallo hoy?</p>
+          <div class="toggle" role="group" aria-label="¿Hubo algún fallo hoy?">
+            <button class="toggle__opcion" id="botonFalloSi" data-valor="true" aria-pressed="false">Sí</button>
+            <button class="toggle__opcion" id="botonFalloNo" data-valor="false" aria-pressed="false">No</button>
+          </div>
+        </div>
+
+        <div class="campo" id="contenedorReencuadre" hidden>
+          <label class="campo__etiqueta" for="campoReencuadre">¿Qué aprendí de esta distracción hoy que puedo usar a mi favor mañana?</label>
+          <textarea id="campoReencuadre" class="campo__input" rows="3" placeholder="Tu reencuadre"></textarea>
+        </div>
+
+        <div class="afirmaciones" role="list" aria-label="Afirmaciones de noche">
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--night" role="listitem">
+            <p>Reconozco y valoro el esfuerzo que he puesto hoy en mis acciones. Me permito soltar aquello que no salió como esperaba, guardando únicamente el aprendizaje que me hace más sabio.</p>
+          </div>
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--night" role="listitem">
+            <p>Mi valor como persona es constante y no depende de mis resultados externos. Hoy hice lo mejor que pude con los recursos que tenía en el momento.</p>
+          </div>
+          <div class="afirmaciones__tarjeta afirmaciones__tarjeta--night" role="listitem">
+            <p>A medida que siento el peso de mi cuerpo descansando sobre el colchón, me doy permiso para apagar las exigencias del día. Entro en un estado de pausa profunda, donde mi mente se limpia y mi cuerpo se restaura naturalmente.</p>
+          </div>
+        </div>
+
+        <h2 class="subtitulo">Imágenes para soltar</h2>
+
+        <div class="tarjeta">
+          <h3 class="tarjeta__titulo">La Mochila Física</h3>
+          <p>Visualiza que durante todo el día llevas puesta una mochila pesada y apretada que contiene las exigencias y resultados de tu jornada. Al decir tu afirmación en la cama, te imaginas desabrochando las correas y dejándola caer al suelo. Concéntrate en verla en el suelo y sentir cómo tus hombros y espalda se liberan de ese peso al instante.</p>
+        </div>
+        <div class="tarjeta">
+          <h3 class="tarjeta__titulo">El Globo Aerostático</h3>
+          <p>Imagina que las tensiones del día son pesados sacos de arena atados a la canasta de un globo. Al exhalar, visualizas o sientes cómo cortas las cuerdas. Los sacos caen (liviandad) y el globo se eleva suavemente y sin esfuerzo hacia un cielo nocturno y despejado.</p>
+        </div>
+        <div class="tarjeta">
+          <h3 class="tarjeta__titulo">El Hielo Derritiéndose</h3>
+          <p>Imagina que cualquier pensamiento persistente o preocupación es un bloque de hielo sólido y frío en tu mente. Con el calor de tu respiración, visualizas cómo se derrite suavemente, convirtiéndose en agua tibia que simplemente se escurre y desaparece.</p>
+        </div>
+
+        <button class="boton boton--primario" id="botonCompletarNoche" aria-label="Completar bloque de noche">Completar noche ✓</button>
+      </section>
+
+      <section class="pantalla" data-screen="history" aria-label="Historial">
+        <h1 class="pantalla__titulo">Historial</h1>
+
+        <div class="racha">
+          <span class="racha__icono" aria-hidden="true">🔥</span>
+          <span class="racha__texto" id="rachaTexto">0 días</span>
+        </div>
+
+        <div class="historial-grid" id="historialGrid" role="list" aria-label="Últimos 30 días"></div>
+
+        <div class="historial-acciones">
+          <button class="boton boton--secundario boton--ancho" id="botonExportar" aria-label="Exportar datos">Exportar datos</button>
+          <button class="boton boton--secundario boton--ancho" id="botonImportar" aria-label="Importar datos">Importar datos</button>
+          <input type="file" id="inputImportar" accept="application/json" hidden />
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Barra de navegación inferior fija. data-target indica la pantalla
+         a la que navega el router al tocarla. -->
+    <nav class="nav" aria-label="Navegación principal">
+      <button class="nav__item" data-target="morning" aria-label="Ir a Mañana">
+        <span class="nav__icono" aria-hidden="true">☀️</span>
+        <span class="nav__punto" data-dot="morning" hidden></span>
+      </button>
+      <button class="nav__item" data-target="midday" aria-label="Ir a Mediodía">
+        <span class="nav__icono" aria-hidden="true">🔍</span>
+        <span class="nav__punto" data-dot="midday" hidden></span>
+      </button>
+      <button class="nav__item" data-target="threshold" aria-label="Ir a Umbral">
+        <span class="nav__icono" aria-hidden="true">🚪</span>
+        <span class="nav__punto" data-dot="threshold" hidden></span>
+      </button>
+      <button class="nav__item" data-target="night" aria-label="Ir a Noche">
+        <span class="nav__icono" aria-hidden="true">🌙</span>
+        <span class="nav__punto" data-dot="night" hidden></span>
+      </button>
+      <button class="nav__item" data-target="history" aria-label="Ir a Historial">
+        <span class="nav__icono" aria-hidden="true">📅</span>
+        <span class="nav__punto" data-dot="history" hidden></span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- Modal del timer de respiración 4-2-6. Compartido por todas las
+       pantallas que tengan un botón "Respiración 4-2-6". -->
+  <div class="modal" id="modalTimer" role="dialog" aria-modal="true" aria-label="Respiración 4-2-6">
+    <div class="modal__contenido modal__contenido--timer">
+      <button class="boton-cerrar" id="botonCerrarTimer" aria-label="Cerrar respiración">✕</button>
+
+      <svg class="anillo-respiracion" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="anillo-respiracion__fondo" cx="100" cy="100" r="80" />
+        <circle class="anillo-respiracion__progreso" id="circuloProgresoTimer" cx="100" cy="100" r="80" />
+      </svg>
+
+      <p class="timer__fase" id="timerTextoFase">Inhalo</p>
+      <p class="timer__mantra" id="timerTextoMantra">claridad</p>
+      <p class="timer__ciclos" id="timerContadorCiclos">Ciclos completados: 0</p>
+
+      <button class="boton boton--primario" id="botonPausarTimer" aria-label="Pausar o reanudar respiración">Pausar</button>
+    </div>
+  </div>
+
+  <!-- Modal de detalle de un día del historial -->
+  <div class="modal" id="modalDetalleDia" role="dialog" aria-modal="true" aria-label="Detalle del día">
+    <div class="modal__contenido">
+      <button class="boton-cerrar" id="botonCerrarDetalleDia" aria-label="Cerrar detalle del día">✕</button>
+      <h2 class="subtitulo subtitulo--sin-margen-superior" id="detalleDiaFecha">Fecha</h2>
+      <div id="detalleDiaContenido"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

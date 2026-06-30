@@ -1,0 +1,64 @@
+/* tokens.css — variables de diseño globales (colores, tipografía, espaciado).
+   Definidas según CLAUDE.md sección 6.2. No tocar valores acá sin actualizar
+   también la documentación. */
+
+:root {
+  /* Fondos */
+  --color-bg:           #1C1A17;   /* crema oscuro, fondo base */
+  --color-surface:      #252219;   /* superficie de tarjetas */
+  --color-surface-2:    #2E2A22;   /* hover/activo suave */
+
+  /* Texto */
+  --color-text:         #F2EDE4;   /* texto principal */
+  --color-text-muted:   #9C9488;   /* texto secundario, etiquetas */
+  --color-text-faint:   #605A51;   /* placeholder, disabled */
+
+  /* Acentos por momento del día */
+  --color-morning:      #E8A04C;   /* ámbar */
+  --color-midday:       #A8B86B;   /* verde lima suave */
+  --color-threshold:    #C2724F;   /* terracota */
+  --color-night:        #3D5A52;   /* verde-azulado profundo */
+
+  /* Acento neutro (UI genérica) */
+  --color-accent:       #E8A04C;   /* ámbar, mismo que morning */
+  --color-accent-dim:   #7A5828;   /* ámbar oscuro, para bordes sutiles */
+
+  /* Tipografía */
+  --font-display:       'Fraunces', Georgia, serif;
+  --font-body:          'Inter', system-ui, sans-serif;
+
+  /* Escala tipográfica */
+  --text-xs:    0.75rem;   /* 12px */
+  --text-sm:    0.875rem;  /* 14px */
+  --text-base:  1rem;      /* 16px */
+  --text-lg:    1.125rem;  /* 18px */
+  --text-xl:    1.25rem;   /* 20px */
+  --text-2xl:   1.5rem;    /* 24px */
+  --text-3xl:   1.875rem;  /* 30px */
+
+  /* Espaciado */
+  --space-1:   0.25rem;
+  --space-2:   0.5rem;
+  --space-3:   0.75rem;
+  --space-4:   1rem;
+  --space-6:   1.5rem;
+  --space-8:   2rem;
+  --space-12:  3rem;
+  --space-16:  4rem;
+
+  /* Bordes */
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-full: 9999px;
+
+  /* Transiciones */
+  --transition-fast:    150ms ease;
+  --transition-base:    250ms ease;
+  --transition-slow:    400ms ease;
+
+  /* Z-index */
+  --z-screen:   1;
+  --z-nav:      10;
+  --z-modal:    100;
+}
