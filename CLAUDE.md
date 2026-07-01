@@ -6,6 +6,27 @@ está acá explicada con su porqué.
 
 ---
 
+## 0. Estado actual (leer primero)
+
+**La app está completa y en producción.** Las secciones 9 y 10 de más abajo
+describen el plan *original* de construcción — quedan como referencia
+histórica, no como pendientes. Todo lo de la sección 5 (contenido de las
+5 pantallas) ya está implementado con las frases reales del docx.
+
+- **URL en vivo:** https://leanvalen.github.io/entrenamiento-mental/
+- **Repo:** https://github.com/leanvalen/entrenamiento-mental (rama `main`)
+- Instalada como PWA en el celular del usuario; funciona offline porque el
+  service worker cachea todos los assets en el primer uso (ver sección 7).
+- Cualquier cambio se refleja en el celular recién cuando: (1) se hace
+  `git push` a `main`, (2) GitHub Pages termina de propagar (1-2 min), y
+  (3) el celular tiene señal la próxima vez que abre la app (el SW chequea
+  actualizaciones en segundo plano).
+- Ver sección 12 para el detalle completo de despliegue y las decisiones
+  que se tomaron *después* de la construcción inicial (no estaban en el
+  plan original).
+
+---
+
 ## 1. Qué es este proyecto
 
 Una Progressive Web App (PWA) de uso estrictamente personal para implementar
@@ -67,8 +88,14 @@ entrenamiento-mental/
 │   ├── icon-192.png                 ← ícono PWA 192×192
 │   └── icon-512.png                 ← ícono PWA 512×512
 └── docs/
-    └── Entrenamiento_Mental_chat_Gemini.docx   ← referencia de contenido original
+    └── Entrenamiento Mental chat Gemini.docx   ← referencia de contenido original
 ```
+
+**`docs/` no está en el repo de GitHub** (está en `.gitignore`). El docx
+tiene contenido personal de coaching y el repo es público, así que se
+excluyó a propósito — sigue existiendo en el disco local, solo no se
+sube. Si el archivo desaparece de la carpeta local, no hay forma de
+recuperarlo desde git; es responsabilidad del usuario respaldarlo aparte.
 
 **Regla de organización:** cada pantalla tiene su propio archivo JS en
 `screens/`. El HTML de cada pantalla vive en `index.html` dentro de
@@ -325,12 +352,13 @@ Los completados del día muestran un pequeño punto debajo del ícono.
 
 ## 7. PWA
 
-### `manifest.json` mínimo viable:
+### `manifest.json` real (actualizado tras el deploy):
 ```json
 {
   "name": "Entrenamiento Mental",
   "short_name": "E. Mental",
-  "start_url": "/",
+  "start_url": ".",
+  "scope": ".",
   "display": "standalone",
   "background_color": "#1C1A17",
   "theme_color": "#E8A04C",
@@ -341,6 +369,18 @@ Los completados del día muestran un pequeño punto debajo del ícono.
 }
 ```
 
+**Importante — `start_url` y `scope` son relativos (`"."`), no absolutos
+(`"/"`).** GitHub Pages publica el sitio en una subcarpeta
+(`usuario.github.io/entrenamiento-mental/`), no en la raíz del dominio.
+Con rutas absolutas, la app instalada apuntaba a la raíz del dominio y
+tiraba 404 (bug real que pasó y se corrigió). Por la misma razón:
+- `service-worker.js` registra con `navigator.serviceWorker.register('./service-worker.js')` (relativo), no `'/service-worker.js'`.
+- La lista `ASSETS_PROPIOS` dentro de `service-worker.js` usa rutas con
+  `./` al principio (`./index.html`, `./css/app.css`, etc.), no `/`.
+- Si algún día se vuelve a servir desde la raíz de un dominio propio
+  (ej. Netlify con dominio custom), las rutas relativas siguen
+  funcionando igual — no hace falta revertir nada.
+
 ### Service Worker:
 - Cachear en install: `index.html`, todos los `.css`, todos los `.js`,
   los iconos, y las fuentes de Google Fonts.
@@ -348,6 +388,18 @@ Los completados del día muestran un pequeño punto debajo del ícono.
   Fonts (para que actualicen si cambian).
 - Si no hay red y el recurso no está en caché, mostrar el `index.html`
   cacheado (la app funciona offline una vez instalada).
+
+### Content-Security-Policy
+`index.html` tiene un `<meta http-equiv="Content-Security-Policy">` que
+limita `connect-src` a `'self'` (nada de fetch/XHR a otros orígenes) y
+`script-src`/`style-src`/`font-src` a lo mínimo necesario (propio origen
++ Google Fonts). Mitiga el escenario de que un compromiso de la cuenta de
+GitHub permita pushear JS malicioso a `main`: aunque se ejecutara, no
+podría exfiltrar los datos de `localStorage` a un servidor externo.
+Verificado que no rompe: carga de fuentes, registro del service worker,
+ni el coloreado del grid de historial vía `el.style.background` en JS
+(la CSP no bloquea asignaciones de estilo por CSSOM, solo `<style>`
+inyectado y atributos `style=""` en el marcado).
 
 ---
 
@@ -374,6 +426,11 @@ Los completados del día muestran un pequeño punto debajo del ícono.
 
 ## 9. Orden de construcción recomendado
 
+**✅ Completo — esto es un registro histórico, no un plan pendiente.**
+Se construyó en este orden exacto en una sola sesión. Útil como
+referencia si algún día se rehace el proyecto desde cero o se explica a
+otra persona cómo se armó.
+
 Construir en este orden permite tener algo funcional lo antes posible:
 
 1. **Esqueleto HTML + CSS base** (tokens, reset, layout de pantalla única,
@@ -394,18 +451,24 @@ Construir en este orden permite tener algo funcional lo antes posible:
 
 ## 10. Comandos útiles
 
+**Nota:** esta compu no tiene `node`/`npx`/`npm` instalados. El servidor
+de desarrollo real que se usa es `python -m http.server` (Python sí está
+instalado). El deploy real es por `git push` a GitHub Pages, no por
+`netlify-cli` — ver sección 12.
+
 ```bash
 # Levantar servidor de desarrollo local
-npx serve .
-# o alternativamente:
-python3 -m http.server 8080
+python -m http.server 5050
+# (en Windows, con PowerShell, correrlo con Start-Process -WindowStyle
+# Hidden para que no bloquee la terminal)
 
 # Ver la app en el celular desde la misma red wifi
-# (reemplazar X.X.X.X con la IP local de la compu)
-# http://X.X.X.X:8080
-
-# Deploy a Netlify (cuando esté lista para instalar en el celu)
-npx netlify-cli deploy --prod --dir .
+# (reemplazar X.X.X.X con la IP local de la compu, ver `ipconfig`)
+# http://X.X.X.X:5050
+# OJO: sin HTTPS el service worker NO se registra en el celular (los
+# navegadores exigen contexto seguro: HTTPS o localhost). Esto sirve
+# para ver la UI rápido, pero no para probar instalación/offline real.
+# Para eso hace falta la URL de producción (sección 12).
 ```
 
 ---
@@ -424,6 +487,44 @@ estructura actual:
 - [ ] Sincronización entre dispositivos (requeriría un backend mínimo)
 - [ ] Internacionalización (la app es en español, pero la estructura
       de i18n puede prepararse)
+
+---
+
+## 12. Despliegue (decisión tomada después de la construcción inicial)
+
+**Dónde vive:**
+- Repo: https://github.com/leanvalen/entrenamiento-mental, rama `main`.
+- Hosting: GitHub Pages, gratis, sirve directo desde `main` en la raíz
+  (`/`), configurado en Settings → Pages del repo.
+- URL pública: https://leanvalen.github.io/entrenamiento-mental/
+
+**Por qué GitHub Pages y no Netlify** (que es lo que sugería originalmente
+la sección 10): no había `node`/`npx` instalados en la compu, así que
+`netlify-cli` no era una opción sin instalar Node primero. GitHub Pages
+no necesita nada más que `git push` — ya se usa git en el proyecto.
+
+**Por qué el repo es público y qué se excluyó por eso:**
+GitHub Pages gratis solo sirve desde repos públicos (Pages privado
+requiere GitHub Pro). Como el código no tiene datos personales del
+usuario (esos viven solo en `localStorage` del dispositivo, nunca se
+suben), se aceptó que el repo sea público — con la excepción del
+`docs/*.docx`, que sí tiene contenido personal de coaching y quedó fuera
+vía `.gitignore` (ver sección 3).
+
+**Flujo para publicar un cambio:**
+1. Editar el código localmente.
+2. `git add` + `git commit` + `git push origin main`.
+3. Esperar 1-2 minutos a que el CDN de GitHub Pages propague.
+4. El celular del usuario recibe la actualización la próxima vez que abre
+   la app con señal (el service worker chequea en segundo plano).
+
+**Riesgo a tener en cuenta — no borrar el repo:**
+Aunque la app funciona offline día a día (todo cacheado localmente), el
+repo/Pages sigue siendo necesario como "ancla" de la instalación:
+si se borra, el próximo chequeo de actualización del navegador puede
+encontrar un 404 en `service-worker.js` y desregistrar el service worker,
+rompiendo la app instalada sin forma de recuperarla. No borrar el repo
+mientras la PWA siga instalada en el celular.
 
 ---
 
